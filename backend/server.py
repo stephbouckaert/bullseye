@@ -476,7 +476,7 @@ async def standings(month: str = "all"):
     return {"standings": rows, "months": months, "selected": month}
 
 
-async def compute_standings(month: str = "all"):
+async def compute_standings(month: str = "all") -> tuple:
     matches = await db.matches.find({"official": True, "confirmed": {"$ne": False}}, {"_id": 0}).to_list(5000)
     all_months = sorted({m["date"][:7] for m in matches})
     if month != "all":
@@ -516,7 +516,7 @@ async def compute_standings(month: str = "all"):
 
 
 @api_router.get("/players/lookup")
-async def player_lookup(email: str):
+async def player_lookup(email: str) -> dict:
     email = email.lower().strip()
     player = await db.players.find_one({"email": email}, {"_id": 0})
     if not player:
