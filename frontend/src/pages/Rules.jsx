@@ -55,15 +55,17 @@ export default function Rules() {
             <p>Throw a dart at the bullseye. <strong className="text-white">Closest to the center</strong> throws first.</p>
           </Rule>
           <Rule icon={Crosshair} title="Medley Game">
-            <p><strong className="text-white">Game 1:</strong> 701</p>
-            <p><strong className="text-white">Game 2:</strong> Cricket</p>
-            <p><strong className="text-white">Game 3:</strong> Player's choice of 701 or Cricket</p>
+            <p><strong className="text-white">Game 1:</strong> 701 — straight start, <span className="text-amber-500/90">Master Out</span> finish (double or bull to close).</p>
+            <p><strong className="text-white">Game 2:</strong> Standard Cricket — 20, 19, 18, 17, 16, 15 &amp; Bull.</p>
+            <p><strong className="text-white">Game 3:</strong> Player's choice of 701 or Cricket — the decider.</p>
           </Rule>
           <Rule icon={TrendingUp} title="Count Up Game">
-            <p>A pure scoring game. The winner earns one bonus point.</p>
+            <p>Throw 3 darts a round over 8 rounds and stack the highest total — every hit counts, bulls and trebles included.</p>
+            <p className="text-amber-500/90">Highest total wins the game (+1 league point).</p>
           </Rule>
           <Rule icon={Scissors} title="Half It Game">
-            <p>An accuracy and precision challenge. The winner earns one bonus point.</p>
+            <p>Hit the called target each round — 15, 16, Double, 17, 18, 20, Bull. Land it and you score; <strong className="text-crimson">miss it and your score is HALVED.</strong></p>
+            <p className="text-amber-500/90">Highest score after all rounds wins (+1 league point).</p>
           </Rule>
           <Rule icon={ClipboardCheck} title="Score Tracking" accent="text-emerald">
             <p>Venue staff record all scores in the league system after each match.</p>
