@@ -1,0 +1,75 @@
+{
+  "project_name": "Belly Darts League",
+  "app_type": "hybrid_fullstack",
+  "design_context": {
+    "type": "Marketing & Tactical League Dashboard",
+    "theme": "Dark, Bold & Sporty Craft Beer Tavern",
+    "brand_identity": "Belly and the Beer - 21 Elgin Street, Soho, Hong Kong",
+    "emotional_tone": "High-octane athletic pub competition, warm craft beer culture, sharp tactical precision"
+  },
+  "colors": {
+    "background_main": "#0F1115",
+    "background_surface": "#161B22",
+    "background_card": "#1E232B",
+    "border_subtle": "rgba(255, 255, 255, 0.1)",
+    "border_active": "rgba(245, 158, 11, 0.5)",
+    "primary_amber_gold": "#F59E0B",
+    "primary_amber_hover": "#D97706",
+    "accent_dart_crimson": "#EF4444",
+    "accent_dart_emerald": "#10B981",
+    "text_heading": "#FFFFFF",
+    "text_body": "#E5E7EB",
+    "text_muted": "#9CA3AF"
+  },
+  "typography": {
+    "font_family_heading": "Barlow Condensed, Oswald, Unbounded, sans-serif",
+    "font_family_body": "Outfit, Inter, sans-serif",
+    "font_family_mono": "JetBrains Mono, monospace",
+    "scale": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight",
+      "h3": "text-xl sm:text-2xl font-bold tracking-tight",
+      "subtitle": "text-base sm:text-lg font-medium text-amber-400/90 tracking-wide uppercase",
+      "body": "text-base leading-relaxed text-gray-300",
+      "small_label": "text-xs uppercase tracking-widest font-semibold text-gray-400"
+    }
+  },
+  "spacing_and_layout": {
+    "container_padding": "p-4 sm:p-6 lg:p-8",
+    "section_gap": "gap-8 lg:gap-12",
+    "bento_grid_mode": "MODE B: Tactical High Density & Mode A Hybrid",
+    "grid_structure": "grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6"
+  },
+  "image_urls": {
+    "hero_dartboard": "https://images.unsplash.com/photo-1760931657877-8e0b0d1ee1ad?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "dart_throw_action": "https://images.unsplash.com/photo-1766345721533-8c0bf6305386?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "pub_atmosphere": "https://images.unsplash.com/photo-1759430713335-e5f8617cd742?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "craft_beer_tap": "https://images.unsplash.com/photo-1649798511342-b468e770c222?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "guinness_stout": "https://images.unsplash.com/photo-1642191572834-256807f846b7?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "trophy_row": "https://images.unsplash.com/photo-1755039466987-b4f44497c908?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "key_features_to_build": [
+    "Public Landing & League Overview: Hero with venue branding (Belly and the Beer, 21 Elgin St, HK), timeline (Sep 20 - Dec 27), entry fee breakdown ($100 early by Sep 12 / $200 late), prizes, and rules summary.",
+    "Public Standings & Leaderboard: Overall standings + Monthly standings switcher, top 3 trophy callout, stats breakdown (Matches Played, Medley Wins, Count Up Wins, Half It Wins, Total Points max 15/day).",
+    "Season Schedule & Timeline: 15 weeks of Sunday matchdays (3:00 PM - 6:00 PM), filter by week or player, show match status & pairing.",
+    "Interactive Match Score Calculator & Match Day Rules Widget: Clear visual explainer for Medley (2-0 = 3pts, 2-1 = 2pts), Count Up (+1pt), Half It (+1pt), Bullseye throw for first turn.",
+    "Player Registration & Entry Fee Tracking: Public sign-up form with tier calculation ($100 early / $200 late based on registration date), payment tracking indicator.",
+    "Admin Dashboard (Google Auth Simulated/Mocked or Integrated): Score entry tool (3 matches x 3 games per match per player per day), Player approval & fee management, Schedule manager."
+  ],
+  "component_design_rules": {
+    "header": "Sticky Glassmorphic Header (`backdrop-blur-xl bg-[#0F1115]/80 border-b border-white/10 z-50`). Never transparent without blur.",
+    "cards": "Dark tavern slate surfaces (`bg-[#161B22] border border-white/10 hover:border-amber-500/40 transition-all duration-200 rounded-xl p-6`).",
+    "buttons_primary": "Pill or sleek rounded rectangular CTA (`bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider px-6 py-3 shadow-lg shadow-amber-500/20 active:scale-95 transition-all`).",
+    "buttons_secondary": "Bordered dark button (`bg-white/5 hover:bg-white/10 text-white font-semibold border border-white/20 px-5 py-2.5 rounded-lg transition-all`).",
+    "tables_and_leaderboards": "High-density tactical tables with rank badges (Gold #1, Silver #2, Bronze #3), subtle grid lines, hover highlighting, and sortable columns.",
+    "data_testid_requirement": "EVERY interactive element (buttons, tabs, inputs, filters, table rows, cards) MUST include a clear `data-testid` attribute (e.g. data-testid='admin-score-entry-submit-button', data-testid='standings-monthly-tab')."
+  },
+  "instructions_to_main_agent": [
+    "Use Javascript (.js / .jsx) components as configured in the frontend.",
+    "Integrate Lucide icons or Phosphor icons for dart, beer, calendar, trophy, shield, clock, location, user, check, and edit icons.",
+    "Ensure all forms use controlled state with toast feedback via Sonner (`import { toast } from 'sonner'`).",
+    "Make sure every interactive element has `data-testid` for automated end-to-end verification.",
+    "Include mock seed data for 12+ players, multi-week match histories, and realistic dart scores so the standings look rich immediately.",
+    "Provide a toggle or quick-switcher between Public View and Admin Dashboard for seamless testing."
+  ]
+}
