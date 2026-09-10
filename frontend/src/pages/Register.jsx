@@ -7,6 +7,8 @@ import { IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
+const successReveal = { initial: { scale: 0.8, opacity: 0 }, animate: { scale: 1, opacity: 1 } };
+
 export default function Register() {
   const [form, setForm] = useState({ name: "", nickname: "", email: "", phone: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -37,7 +39,7 @@ export default function Register() {
       <div className="min-h-screen bg-ink-900">
         <Navbar />
         <div className="max-w-lg mx-auto px-4 py-20 text-center">
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+          <motion.div {...successReveal}>
             <CheckCircle2 className="text-emerald mx-auto mb-6" size={64} />
             <h1 className="font-head font-black uppercase text-4xl text-white mb-3">You're Registered!</h1>
             <p className="text-gray-400 mb-6">Welcome to the Belly Darts League, {done.name}. Your spot is locked in.</p>

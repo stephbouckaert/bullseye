@@ -7,8 +7,9 @@ import { IMAGES, GAME_IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const Stat = ({ value, label, icon: Icon }) => (
-  <div className="bg-ink-800 border border-white/10 rounded-xl p-6 hover:border-amber-500/40 transition-all">
+const heroReveal = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6 } };
+
+const Stat = ({ value, label, icon: Icon }) => (  <div className="bg-ink-800 border border-white/10 rounded-xl p-6 hover:border-amber-500/40 transition-all">
     <Icon className="text-amber-500 mb-3" size={26} />
     <div className="font-head font-black text-3xl sm:text-4xl text-white">{value}</div>
     <div className="font-mono text-[11px] uppercase tracking-widest text-gray-400 mt-1">{label}</div>
@@ -38,7 +39,7 @@ export default function Home() {
           <div className="absolute inset-0 grain" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div {...heroReveal}>
             <span className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono text-xs uppercase tracking-widest px-4 py-2 rounded-full">
               <Beer size={14} /> Belly and the Beer · 21 Elgin St, Hong Kong
             </span>

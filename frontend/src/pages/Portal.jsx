@@ -104,6 +104,8 @@ function SubmitMatch({ me, players, onDone }) {
   );
 }
 
+const portalReveal = { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 } };
+
 export default function Portal() {
   const [email, setEmail] = useState("");
   const [data, setData] = useState(null);
@@ -155,7 +157,7 @@ export default function Portal() {
         </form>
 
         {data && (
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+          <motion.div {...portalReveal} className="space-y-6">
             {/* header card */}
             <div className="bg-gradient-to-br from-amber-500/15 to-ink-800 border border-amber-500/30 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-4">

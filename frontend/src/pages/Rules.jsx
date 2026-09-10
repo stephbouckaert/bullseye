@@ -7,8 +7,8 @@ const Rule = ({ icon: Icon, title, children, accent = "text-amber-500", images }
   <div className="bg-ink-800 border border-white/10 rounded-2xl p-6 hover:border-amber-500/40 transition-all">
     {images && (
       <div className={`grid ${images.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-2 mb-4`}>
-        {images.map((src, i) => (
-          <img key={i} src={src} alt={title} className="h-24 w-full object-cover rounded-lg border border-white/10" />
+        {images.map((src) => (
+          <img key={src} src={src} alt={title} className="h-24 w-full object-cover rounded-lg border border-white/10" />
         ))}
       </div>
     )}

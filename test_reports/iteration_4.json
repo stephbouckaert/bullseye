@@ -1,0 +1,25 @@
+{
+  "summary": "Frontend-only regression after cosmetic refactor (image thumbnails keyed by src, finals confetti stable key, motion prop objects extracted to module-level constants in Home/Portal/Register/Finals). Verified all public pages (Home hero + game screenshots, Standings, Schedule, Rules with 701/Cricket/Count Up/Half It thumbnails present, Register, Finals). Register submitted with unique email 'testreg######@example.com' and animated 'YOU'RE REGISTERED!' confirmation with EARLY BIRD tier + $100 fee rendered. Finals /finals: bracket rendered top-8 seeds; Crown-the-Champion produced confetti + champion card ('MEI LING' 29 pts). Portal /portal lookup for marcus.chan@example.com rendered stat grid (9 matches, 5/1/3 wins), Log a Match Result form, Upcoming Matchdays, and Match History table. Admin /admin with refreshed session cookie rendered all 5 stat cards (20/48/1/11-20/$1600) and all 4 tabs (Score Entry, Players, Match Log, Rewards) switch and render correctly (initial exact='Match Log' selector missed due to badge; verified via screenshot with case-insensitive uppercase 'MATCH LOG' tab). Only console noise = expected 401 from /api/auth/me on public pages and the known dev-only <span>-inside-<option> visual-editor warning on Portal/Admin selects (explicitly ignored per request). No React key warnings, no pageerrors, no blank screens.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Portal / Admin selects", "issues": ["Pre-existing dev-only <span> child of <option> warning from visual-editor overlay. Cosmetic, ignored per request."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Rules.jsx image key=src, Finals.jsx confetti stable string key, and extracted motion constants (heroReveal/portalReveal/successReveal/championReveal/trophyWobble) all verified: animations still play, no duplicate/missing key warnings, no re-render churn.",
+    "Backend untouched — not re-tested this iteration (last full run: iteration 2, 29/29 pytest passing)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "skipped (per request)", "frontend": "100% of regression flows"},
+  "test_credentials": "Admin session_token=test_regr_iter4_1789015130368 (user_testadmin, steph.bouckaert@gmail.com) inserted into mongo test_database.user_sessions.",
+  "seed_data_creation": "1 new registered player via public POST /api/players/register with a random testreg######@example.com email (no admin/prod data touched).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Purely cosmetic refactor pass — verified frontend renders and animations still play on Home/Portal/Register/Finals plus admin tabs. If future changes are behavioural, re-run pytest at /app/backend/tests/backend_test.py.",
+  "rca of the issue": "N/A — regression clean."
+}

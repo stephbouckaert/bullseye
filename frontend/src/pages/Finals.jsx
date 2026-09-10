@@ -37,7 +37,7 @@ const Confetti = () => {
         const dur = 2.5 + Math.random() * 2;
         const size = 6 + Math.random() * 8;
         return (
-          <motion.div key={i}
+          <motion.div key={`confetti-${i}`}
             initial={{ y: -40, opacity: 1, rotate: 0 }}
             animate={{ y: "110vh", rotate: 720, opacity: [1, 1, 0.8, 0] }}
             transition={{ duration: dur, delay, ease: "easeIn", repeat: Infinity }}
@@ -47,6 +47,9 @@ const Confetti = () => {
     </div>
   );
 };
+
+const championReveal = { initial: { scale: 0.7, opacity: 0 }, animate: { scale: 1, opacity: 1 }, transition: { type: "spring", stiffness: 200, damping: 15 } };
+const trophyWobble = { animate: { rotate: [0, -8, 8, -8, 0] }, transition: { duration: 1.2, repeat: Infinity } };
 
 export default function Finals() {
   const [seeds, setSeeds] = useState([]);
@@ -111,10 +114,10 @@ export default function Finals() {
               <Sparkles size={18} /> Crown the Champion
             </button>
           ) : (
-            <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            <motion.div {...championReveal}
               data-testid="champion-celebration"
               className="relative max-w-xl mx-auto bg-gradient-to-br from-amber-500/25 to-ink-800 border border-amber-500/50 rounded-3xl p-10">
-              <motion.div animate={{ rotate: [0, -8, 8, -8, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+              <motion.div {...trophyWobble}>
                 <Trophy className="text-amber-400 mx-auto mb-4" size={72} />
               </motion.div>
               <div className="font-mono text-xs uppercase tracking-widest text-amber-500">Belly Darts League Champion</div>
