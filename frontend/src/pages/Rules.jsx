@@ -1,9 +1,17 @@
 import { Target, Crosshair, Scissors, TrendingUp, Users, HandMetal, ClipboardCheck, Award } from "lucide-react";
+import { GAME_IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const Rule = ({ icon: Icon, title, children, accent = "text-amber-500" }) => (
+const Rule = ({ icon: Icon, title, children, accent = "text-amber-500", images }) => (
   <div className="bg-ink-800 border border-white/10 rounded-2xl p-6 hover:border-amber-500/40 transition-all">
+    {images && (
+      <div className={`grid ${images.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-2 mb-4`}>
+        {images.map((src, i) => (
+          <img key={i} src={src} alt={title} className="h-24 w-full object-cover rounded-lg border border-white/10" />
+        ))}
+      </div>
+    )}
     <Icon className={`${accent} mb-3`} size={26} />
     <h3 className="font-head font-bold uppercase text-xl text-white mb-2">{title}</h3>
     <div className="text-gray-400 text-sm leading-relaxed space-y-1">{children}</div>
@@ -54,16 +62,16 @@ export default function Rules() {
           <Rule icon={HandMetal} title="Who Throws First">
             <p>Throw a dart at the bullseye. <strong className="text-white">Closest to the center</strong> throws first.</p>
           </Rule>
-          <Rule icon={Crosshair} title="Medley Game">
+          <Rule icon={Crosshair} title="Medley Game" images={[GAME_IMAGES.medley701, GAME_IMAGES.cricket]}>
             <p><strong className="text-white">Game 1:</strong> 701 — straight start, <span className="text-amber-500/90">Master Out</span> finish (double or bull to close).</p>
             <p><strong className="text-white">Game 2:</strong> Standard Cricket — 20, 19, 18, 17, 16, 15 &amp; Bull.</p>
             <p><strong className="text-white">Game 3:</strong> Player's choice of 701 or Cricket — the decider.</p>
           </Rule>
-          <Rule icon={TrendingUp} title="Count Up Game">
+          <Rule icon={TrendingUp} title="Count Up Game" images={[GAME_IMAGES.countup]}>
             <p>Throw 3 darts a round over 8 rounds and stack the highest total — every hit counts, bulls and trebles included.</p>
             <p className="text-amber-500/90">Highest total wins the game (+1 league point).</p>
           </Rule>
-          <Rule icon={Scissors} title="Half It Game">
+          <Rule icon={Scissors} title="Half It Game" images={[GAME_IMAGES.halfit]}>
             <p>Hit the called target each round — 15, 16, Double, 17, 18, 20, Bull. Land it and you score; <strong className="text-crimson">miss it and your score is HALVED.</strong></p>
             <p className="text-amber-500/90">Highest score after all rounds wins (+1 league point).</p>
           </Rule>

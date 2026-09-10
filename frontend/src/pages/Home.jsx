@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Target, Beer, Trophy, Calendar, Clock, MapPin, ArrowRight, Zap, Users } from "lucide-react";
 import api from "@/lib/api";
-import { IMAGES } from "@/lib/assets";
+import { IMAGES, GAME_IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -115,9 +115,9 @@ export default function Home() {
         <p className="text-gray-400 mb-8">Each 1v1 match is a three-game battle. Play up to 3 opponents a matchday.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { t: "Medley", d: "Game 1: 701 (Master Out) · Game 2: Standard Cricket (20–15 + Bull) · Game 3: choice of the two. Win 2-0 for 3 pts, 2-1 for 2 pts.", pts: "3 pts", img: IMAGES.action },
-            { t: "Count Up", d: "Add up your 3-dart scores over 8 rounds — highest total wins. Winner takes +1 point.", pts: "+1 pt", img: IMAGES.pub },
-            { t: "Half It", d: "Hit each called target (15, 16, DBL, 17…). Miss and your score is halved. Winner takes +1 point.", pts: "+1 pt", img: IMAGES.beerTap },
+            { t: "Medley", d: "Game 1: 701 (Master Out) · Game 2: Standard Cricket (20–15 + Bull) · Game 3: choice of the two. Win 2-0 for 3 pts, 2-1 for 2 pts.", pts: "3 pts", img: GAME_IMAGES.medley701 },
+            { t: "Count Up", d: "Add up your 3-dart scores over 8 rounds — highest total wins. Winner takes +1 point.", pts: "+1 pt", img: GAME_IMAGES.countup },
+            { t: "Half It", d: "Hit each called target (15, 16, DBL, 17…). Miss and your score is halved. Winner takes +1 point.", pts: "+1 pt", img: GAME_IMAGES.halfit },
           ].map((g, i) => (
             <div key={i} className="group relative overflow-hidden bg-ink-800 border border-white/10 rounded-2xl hover:border-amber-500/40 transition-all">
               <div className="h-40 overflow-hidden">

@@ -8,3 +8,10 @@ export const IMAGES = {
   stout: "https://images.unsplash.com/photo-1642191572834-256807f846b7?crop=entropy&cs=srgb&fm=jpg&q=85",
   trophy: "https://images.unsplash.com/photo-1755039466987-b4f44497c908?crop=entropy&cs=srgb&fm=jpg&q=85",
 };
+
+export const GAME_IMAGES = {
+  medley701: "https://customer-assets-0z36b82j.emergentagent.net/job_bullseye-matches/artifacts/8lxb6y6w_images%20%2879%29.jpg",
+  cricket: "https://customer-assets-0z36b82j.emergentagent.net/job_bullseye-matches/artifacts/x4rktrjr_images%20%2878%29.jpg",
+  countup: "https://customer-assets-0z36b82j.emergentagent.net/job_bullseye-matches/artifacts/2f5cf7qg_images%20%2882%29.jpg",
+  halfit: "https://customer-assets-0z36b82j.emergentagent.net/job_bullseye-matches/artifacts/47eoaikz_images%20%2881%29.jpg",
+};
