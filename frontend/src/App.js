@@ -10,6 +10,8 @@ import Rules from "@/pages/Rules";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import Admin from "@/pages/Admin";
+import Portal from "@/pages/Portal";
+import Finals from "@/pages/Finals";
 
 function AppRouter() {
   const location = useLocation();
@@ -23,6 +25,8 @@ function AppRouter() {
       <Route path="/schedule" element={<Schedule />} />
       <Route path="/rules" element={<Rules />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/portal" element={<Portal />} />
+      <Route path="/finals" element={<Finals />} />
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Admin />} />
     </Routes>

@@ -31,6 +31,16 @@ Darts league manager for "Belly Darts League" at "Belly and the Beer", 21 Elgin 
 - Seed data: 14 players + ~6 weeks of matches.
 - Tested: backend 100% (15 pytest), frontend 100%.
 
+## Implemented (2026-06 · iteration 2)
+- Player Portal (/portal): email-only lookup → rank/points/stats, upcoming matchdays, match history; players submit results (go in as PENDING).
+- Moderator flow: players submit → admin confirms or edits (recomputes points) before matches count in standings. Standings exclude confirmed=false.
+- Finals bracket (/finals): top-8 seeded from standings + "Crown the Champion" confetti celebration.
+- Welcome email on registration via Emergent-managed Resend (fee/tier details). Verified 202 Accepted.
+- Score export: admin one-tap CSV of all matches (/api/admin/matches/export).
+- Monthly rewards: admin sets a different reward per season month (Rewards tab); shown publicly on Home.
+- Clarifications applied: early-bird cutoff moved to 31 Oct 2026; Medley = Game1 701 / Game2 Cricket / Game3 choice of 701 or Cricket.
+- Tested: backend 29/29 pytest (100%), all new frontend flows verified.
+
 ## Backlog / Remaining
 - P1: Player self-portal (login to see own stats/schedule).
 - P2: Email confirmations on registration (Resend).

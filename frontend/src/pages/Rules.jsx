@@ -55,7 +55,9 @@ export default function Rules() {
             <p>Throw a dart at the bullseye. <strong className="text-white">Closest to the center</strong> throws first.</p>
           </Rule>
           <Rule icon={Crosshair} title="Medley Game">
-            <p>A combination of <strong className="text-white">301/701</strong>, <strong className="text-white">Cricket</strong>, and a game of choice.</p>
+            <p><strong className="text-white">Game 1:</strong> 701</p>
+            <p><strong className="text-white">Game 2:</strong> Cricket</p>
+            <p><strong className="text-white">Game 3:</strong> Player's choice of 701 or Cricket</p>
           </Rule>
           <Rule icon={TrendingUp} title="Count Up Game">
             <p>A pure scoring game. The winner earns one bonus point.</p>

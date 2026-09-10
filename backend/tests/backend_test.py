@@ -35,7 +35,7 @@ class TestPublic:
         assert d["start_date"] == "2026-09-20"
         assert d["weeks"] == 15
         assert d["fee_early"] == 100 and d["fee_late"] == 200
-        assert d["early_cutoff"] == "2026-09-12"
+        assert d["early_cutoff"] == "2026-10-31"
 
     def test_schedule(self, s):
         r = s.get(f"{API}/schedule")
@@ -73,7 +73,7 @@ class TestPublic:
         r = s.post(f"{API}/players/register", json={"name": "TEST Player", "email": email, "phone": "12345"})
         assert r.status_code == 200
         d = r.json()
-        expected_tier = "early" if date.today() <= date(2026, 9, 12) else "late"
+        expected_tier = "early" if date.today() <= date(2026, 10, 31) else "late"
         expected_fee = 100 if expected_tier == "early" else 200
         assert d["fee_tier"] == expected_tier
         assert d["fee_amount"] == expected_fee
@@ -120,8 +120,8 @@ class TestAdminFlows:
         r = s.put(f"{API}/admin/players/{pid}", json={"paid": True}, headers=admin_headers)
         assert r.status_code == 200
         assert r.json()["paid"] is True
-        # verify persist
-        r2 = s.get(f"{API}/players")
+        # verify persist via admin endpoint (public /players is redacted)
+        r2 = s.get(f"{API}/admin/players", headers={"Authorization": f"Bearer {os.environ.get('ADMIN_TOKEN','')}"})
         found = [p for p in r2.json() if p["id"] == pid]
         assert found and found[0]["paid"] is True
 
@@ -211,3 +211,188 @@ class TestAdminFlows:
         for pid in TestAdminFlows.created_player_ids:
             r = s.delete(f"{API}/admin/players/{pid}", headers=admin_headers)
             assert r.status_code == 200
+
+
+
+# --- New features: portal lookup, submit-match, moderator confirm/edit, CSV export, rewards ---
+class TestPortalAndModeration:
+    def test_lookup_unknown_email(self, s):
+        r = s.get(f"{API}/players/lookup", params={"email": f"nope_{uuid.uuid4().hex}@x.com"})
+        assert r.status_code == 404
+
+    def test_lookup_existing_player(self, s):
+        r = s.get(f"{API}/players/lookup", params={"email": "marcus.chan@example.com"})
+        assert r.status_code == 200, r.text
+        d = r.json()
+        assert d["player"]["email"] == "marcus.chan@example.com"
+        assert "stats" in d and d["stats"] is not None
+        for k in ("rank", "points", "medley_wins", "countup_wins", "halfit_wins", "matches_played"):
+            assert k in d["stats"]
+        assert isinstance(d["history"], list)
+        assert isinstance(d["upcoming"], list)
+        # history rows have needed keys (if any)
+        if d["history"]:
+            row = d["history"][0]
+            for k in ("opponent", "points", "opponent_points", "won", "confirmed", "medley_score"):
+                assert k in row
+
+    def _get_two_players(self, s):
+        players = s.get(f"{API}/players").json()
+        # find marcus and grace
+        m = next(p for p in players if p["name"] == "Marcus Chan")
+        g = next(p for p in players if p["name"] == "Grace Lam")
+        return m, g
+
+    def test_submit_match_pending_and_standings_exclude(self, s, admin_headers):
+        marcus, grace = self._get_two_players(s)
+        # standings BEFORE
+        st_before = s.get(f"{API}/standings?month=all").json()["standings"]
+        pts_before = {r["player_id"]: r["points"] for r in st_before}
+
+        payload = {
+            "submitter_email": "marcus.chan@example.com",
+            "opponent_id": grace["id"],
+            "date": "2026-10-25",
+            "official": True,
+            "medley_winner": "me", "medley_score": "2-0",
+            "countup_winner": "me", "halfit_winner": "opp",
+        }
+        r = s.post(f"{API}/players/submit-match", json=payload)
+        assert r.status_code == 200, r.text
+        m = r.json()
+        assert m["confirmed"] is False
+        # medley 2-0 = 3, count-up win = 1, half-it lost = 0 => points_a=4
+        assert m["points_a"] == 4
+        assert m["points_b"] == 1
+        match_id = m["id"]
+
+        # standings AFTER submit but BEFORE confirm should be unchanged
+        st_pending = s.get(f"{API}/standings?month=all").json()["standings"]
+        pts_pending = {r["player_id"]: r["points"] for r in st_pending}
+        assert pts_pending.get(marcus["id"], 0) == pts_before.get(marcus["id"], 0)
+
+        # confirm as admin
+        r = s.put(f"{API}/admin/matches/{match_id}/confirm", headers=admin_headers)
+        assert r.status_code == 200
+        assert r.json()["confirmed"] is True
+
+        # standings AFTER confirm reflects added points
+        st_after = s.get(f"{API}/standings?month=all").json()["standings"]
+        pts_after = {r["player_id"]: r["points"] for r in st_after}
+        assert pts_after[marcus["id"]] == pts_before.get(marcus["id"], 0) + 4
+        assert pts_after[grace["id"]] == pts_before.get(grace["id"], 0) + 1
+
+        # cleanup
+        s.delete(f"{API}/admin/matches/{match_id}", headers=admin_headers)
+
+    def test_submit_match_errors(self, s):
+        players = s.get(f"{API}/players").json()
+        marcus = next(p for p in players if p["name"] == "Marcus Chan")
+        # unregistered submitter
+        r = s.post(f"{API}/players/submit-match", json={
+            "submitter_email": "ghost@example.com", "opponent_id": marcus["id"],
+            "date": "2026-10-11", "medley_winner": "me", "medley_score": "2-0",
+            "countup_winner": "me", "halfit_winner": "me",
+        })
+        assert r.status_code == 404
+        # same as opponent
+        r = s.post(f"{API}/players/submit-match", json={
+            "submitter_email": "marcus.chan@example.com", "opponent_id": marcus["id"],
+            "date": "2026-10-11", "medley_winner": "me", "medley_score": "2-0",
+            "countup_winner": "me", "halfit_winner": "me",
+        })
+        assert r.status_code == 400
+
+    def test_confirm_auth(self, s, normal_headers):
+        # 401 no auth
+        r = s.put(f"{API}/admin/matches/some-id/confirm")
+        assert r.status_code == 401
+        # 403 non-admin
+        r = s.put(f"{API}/admin/matches/some-id/confirm", headers=normal_headers)
+        assert r.status_code == 403
+
+    def test_edit_match_recomputes_points(self, s, admin_headers):
+        marcus, grace = self._get_two_players(s)
+        # create an admin match A wins 2-0 sweep => A=5
+        match = {"date": "2026-10-18", "official": True,
+                 "player_a_id": marcus["id"], "player_b_id": grace["id"],
+                 "medley_winner_id": marcus["id"], "medley_score": "2-0",
+                 "countup_winner_id": marcus["id"], "halfit_winner_id": marcus["id"]}
+        m = s.post(f"{API}/admin/matches", json=match, headers=admin_headers).json()
+        mid = m["id"]
+        assert m["points_a"] == 5 and m["points_b"] == 0
+
+        # edit: change medley score to 2-1, and countup winner to B
+        r = s.put(f"{API}/admin/matches/{mid}",
+                  json={"medley_score": "2-1", "countup_winner_id": grace["id"]},
+                  headers=admin_headers)
+        assert r.status_code == 200
+        d = r.json()
+        # medley 2-1 winner=A => 2pts, countup=B, halfit=A => A=3, B=1
+        assert d["points_a"] == 3
+        assert d["points_b"] == 1
+
+        # invalid medley score
+        r = s.put(f"{API}/admin/matches/{mid}", json={"medley_score": "3-0"}, headers=admin_headers)
+        assert r.status_code == 400
+        # winner not in match
+        r = s.put(f"{API}/admin/matches/{mid}",
+                  json={"medley_winner_id": str(uuid.uuid4())}, headers=admin_headers)
+        assert r.status_code == 400
+
+        s.delete(f"{API}/admin/matches/{mid}", headers=admin_headers)
+
+    def test_edit_match_auth(self, s, normal_headers):
+        r = s.put(f"{API}/admin/matches/some-id", json={"official": True})
+        assert r.status_code == 401
+        r = s.put(f"{API}/admin/matches/some-id", json={"official": True}, headers=normal_headers)
+        assert r.status_code == 403
+
+
+class TestExportCSV:
+    def test_export_unauth(self, s):
+        r = s.get(f"{API}/admin/matches/export")
+        assert r.status_code == 401
+
+    def test_export_non_admin(self, s, normal_headers):
+        r = s.get(f"{API}/admin/matches/export", headers=normal_headers)
+        assert r.status_code == 403
+
+    def test_export_ok(self, s, admin_headers):
+        r = s.get(f"{API}/admin/matches/export", headers=admin_headers)
+        assert r.status_code == 200
+        assert "text/csv" in r.headers.get("content-type", "")
+        lines = r.text.strip().splitlines()
+        assert lines[0].startswith("Date,Player A,Player B")
+        assert len(lines) >= 2  # header + at least one seeded match
+
+
+class TestRewards:
+    def test_get_rewards_public(self, s):
+        r = s.get(f"{API}/rewards")
+        assert r.status_code == 200
+        data = r.json()
+        assert len(data) == 4
+        months = [d["month"] for d in data]
+        assert months == ["2026-09", "2026-10", "2026-11", "2026-12"]
+        for d in data:
+            assert d["label"].endswith("2026")
+            assert "reward" in d
+
+    def test_set_reward_admin(self, s, admin_headers):
+        r = s.put(f"{API}/admin/rewards/2026-09", json={"reward": "TEST Free pint"}, headers=admin_headers)
+        assert r.status_code == 200
+        # verify persistence via public endpoint
+        r2 = s.get(f"{API}/rewards")
+        sep = next(x for x in r2.json() if x["month"] == "2026-09")
+        assert sep["reward"] == "TEST Free pint"
+
+    def test_set_reward_invalid_month(self, s, admin_headers):
+        r = s.put(f"{API}/admin/rewards/2027-01", json={"reward": "x"}, headers=admin_headers)
+        assert r.status_code == 400
+
+    def test_set_reward_auth(self, s, normal_headers):
+        r = s.put(f"{API}/admin/rewards/2026-09", json={"reward": "x"})
+        assert r.status_code == 401
+        r = s.put(f"{API}/admin/rewards/2026-09", json={"reward": "x"}, headers=normal_headers)
+        assert r.status_code == 403

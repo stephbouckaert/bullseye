@@ -8,8 +8,10 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/standings", label: "Standings" },
   { to: "/schedule", label: "Schedule" },
+  { to: "/finals", label: "Finals" },
   { to: "/rules", label: "Rules" },
   { to: "/register", label: "Register" },
+  { to: "/portal", label: "My Stats" },
 ];
 
 export const Navbar = () => {

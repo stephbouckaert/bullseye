@@ -18,10 +18,12 @@ const Stat = ({ value, label, icon: Icon }) => (
 export default function Home() {
   const [info, setInfo] = useState(null);
   const [playerCount, setPlayerCount] = useState(0);
+  const [rewards, setRewards] = useState([]);
 
   useEffect(() => {
     api.get("/league/info").then((r) => setInfo(r.data)).catch(() => {});
     api.get("/players").then((r) => setPlayerCount(r.data.length)).catch(() => {});
+    api.get("/rewards").then((r) => setRewards(r.data)).catch(() => {});
   }, []);
 
   return (
@@ -74,7 +76,7 @@ export default function Home() {
             <h2 className="font-head font-black uppercase text-3xl text-white mb-6">Season Timeline</h2>
             <div className="space-y-5">
               {[
-                { icon: Beer, t: "Early Bird Deadline", d: "September 12 — lock in the $100 rate", c: "text-emerald" },
+                { icon: Beer, t: "Early Bird Deadline", d: "October 31 — lock in the $100 rate", c: "text-emerald" },
                 { icon: Target, t: "Season Kick-off", d: "September 20 — first darts fly", c: "text-amber-500" },
                 { icon: Clock, t: "Every Sunday", d: "3:00 PM – 6:00 PM match window", c: "text-amber-500" },
                 { icon: Trophy, t: "Finals & Party", d: "December 27 — champions crowned", c: "text-crimson" },
@@ -94,12 +96,12 @@ export default function Home() {
 
           <div className="lg:col-span-5 grid grid-cols-1 gap-6">
             <div className="relative overflow-hidden bg-gradient-to-br from-emerald/20 to-ink-800 border border-emerald/30 rounded-2xl p-7">
-              <div className="font-mono text-xs uppercase tracking-widest text-emerald mb-2">Early Bird · by Sep 12</div>
+              <div className="font-mono text-xs uppercase tracking-widest text-emerald mb-2">Early Bird · by Oct 31</div>
               <div className="font-head font-black text-6xl text-white">$100</div>
-              <p className="text-gray-300 text-sm mt-3">Register before September 12 and save big on your season entry.</p>
+              <p className="text-gray-300 text-sm mt-3">Register before October 31 and save big on your season entry.</p>
             </div>
             <div className="bg-ink-800 border border-white/10 rounded-2xl p-7">
-              <div className="font-mono text-xs uppercase tracking-widest text-gray-400 mb-2">Standard · after Sep 12</div>
+              <div className="font-mono text-xs uppercase tracking-widest text-gray-400 mb-2">Standard · after Oct 31</div>
               <div className="font-head font-black text-6xl text-white">$200</div>
               <p className="text-gray-400 text-sm mt-3">Late entries welcome all season long at the standard rate.</p>
             </div>
@@ -113,7 +115,7 @@ export default function Home() {
         <p className="text-gray-400 mb-8">Each 1v1 match is a three-game battle. Play up to 3 opponents a matchday.</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { t: "Medley", d: "301/701, Cricket & a game of choice. Win 2-0 for 3 pts, 2-1 for 2 pts.", pts: "3 pts", img: IMAGES.action },
+            { t: "Medley", d: "Game 1: 701 · Game 2: Cricket · Game 3: choice of 701 or Cricket. Win 2-0 for 3 pts, 2-1 for 2 pts.", pts: "3 pts", img: IMAGES.action },
             { t: "Count Up", d: "Pure scoring game. Winner takes an extra point.", pts: "+1 pt", img: IMAGES.pub },
             { t: "Half It", d: "Accuracy under pressure. Winner grabs the final point.", pts: "+1 pt", img: IMAGES.beerTap },
           ].map((g, i) => (
@@ -142,9 +144,17 @@ export default function Home() {
             <Trophy className="text-amber-500 mb-4" size={40} />
             <h2 className="font-head font-black uppercase text-4xl text-white mb-4">Prizes & Glory</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 max-w-3xl">
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <div className="font-head font-bold uppercase text-amber-500 text-lg">Monthly Prize</div>
-                <p className="text-gray-300 text-sm mt-2">Top points scorer each month takes home the monthly reward.</p>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                <div className="font-head font-bold uppercase text-amber-500 text-lg">Monthly Prizes</div>
+                <p className="text-gray-300 text-sm mt-2 mb-3">A different reward every month for the top points scorer.</p>
+                <div className="space-y-2" data-testid="home-monthly-rewards">
+                  {rewards.map((r) => (
+                    <div key={r.month} className="flex items-center justify-between gap-3 bg-ink-900/50 border border-white/10 rounded-lg px-3 py-2">
+                      <span className="font-mono text-[11px] uppercase tracking-wider text-gray-400 shrink-0">{r.label.replace(" 2026", "")}</span>
+                      <span className="font-head font-semibold text-white text-sm text-right">{r.reward || "To be announced"}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                 <div className="font-head font-bold uppercase text-amber-500 text-lg">Season Top 3</div>

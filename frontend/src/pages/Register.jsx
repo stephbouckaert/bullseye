@@ -68,7 +68,7 @@ export default function Register() {
           </div>
           {info && (
             <div className="space-y-3">
-              <div className="flex items-center gap-3 text-sm text-gray-300"><Beer size={18} className="text-emerald" /> Early bird ${info.fee_early} if you sign up by Sep 12 — otherwise ${info.fee_late}.</div>
+              <div className="flex items-center gap-3 text-sm text-gray-300"><Beer size={18} className="text-emerald" /> Early bird ${info.fee_early} if you sign up by Oct 31 — otherwise ${info.fee_late}.</div>
               <div className="flex items-center gap-3 text-sm text-gray-300"><Calendar size={18} className="text-amber-500" /> Season runs Sep 20 → Dec 27, Sundays 3–6 PM.</div>
             </div>
           )}
