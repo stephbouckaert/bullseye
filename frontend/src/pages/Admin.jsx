@@ -285,8 +285,8 @@ export default function Admin() {
             { v: pendingCount, l: "Pending Review", i: Clock },
             { v: `${paidCount}/${players.length}`, l: "Fees Paid", i: CheckCircle2 },
             { v: `$${revenue}`, l: "Revenue", i: DollarSign },
-          ].map((st, i) => (
-            <div key={i} className="bg-ink-800 border border-white/10 rounded-xl p-5">
+          ].map((st) => (
+            <div key={st.l} className="bg-ink-800 border border-white/10 rounded-xl p-5">
               <st.i className={`mb-2 ${st.l === "Pending Review" && pendingCount > 0 ? "text-amber-400" : "text-amber-500"}`} size={22} />
               <div className="font-head font-black text-3xl text-white">{st.v}</div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-1">{st.l}</div>

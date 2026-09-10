@@ -55,7 +55,7 @@ export default function Standings() {
         {top3.length === 3 && (
           <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-10">
             {podiumOrder.map((p, i) => {
-              if (!p) return <div key={i} />;
+              if (!p) return <div key={`podium-empty-${i}`} />;
               const heights = ["h-32", "h-44", "h-28"];
               const icons = [<Medal className="text-gray-300" />, <Trophy className="text-amber-400" size={30} />, <Medal className="text-orange-400" />];
               return (

@@ -1,0 +1,25 @@
+{
+  "summary": "Regression pass after code-review key/logging fixes. Browser-tested all pages against public URL. Public pages (Home, Standings, Schedule, Rules, Register, Finals) all render with no new console errors (only expected 401 from /api/auth/me when no cookie). Portal /portal renders stat grid (9 Matches, 5 Medley/1 Count Up/3 Half It wins for marcus.chan), Log a Match Result form (opponent + matchday selects, Submit button), and Upcoming Matchdays list. Admin /admin with refreshed session cookie renders 5 stat cards (Players 20, Matches 48, Pending 1, Fees 11/20, Revenue $1600) and all 4 tabs (Score Entry, Players, Match Log, Rewards) switch and render. Admin Logout redirects to /login and clears session (AuthContext logout catch now logs errors but no error path was triggered). Finals bracket renders and Crown-the-Champion celebration mounts confetti + Projected/Actual Champion card. No React key warnings observed. Regression = clean.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Portal / Admin dropdowns", "issues": ["Pre-existing dev-only React warning: <span> inside <option> from visual-editor overlay. Cosmetic, ignored per request."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Key changes (g.t / x.t / st.l / x.l / stable podium key) verified: no duplicate-key or missing-key warnings triggered during navigation across Home/Admin/Portal/Standings.",
+    "AuthContext logout catch-block now logs errors; happy-path logout still redirects to /login as expected. No regression observed."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (skipped per request)", "frontend": "100% of regression flows"},
+  "test_credentials": "Refreshed admin session_token=test_regr_1789014433382 (user_testadmin, steph.bouckaert@gmail.com) inserted into mongo test_database.user_sessions.",
+  "seed_data_creation": "None. Reused existing seeded players and matches.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend untouched from iteration 2 (29/29 passing). Iteration 3 only validated frontend rendering after React key + logout-catch cosmetic changes. All flows OK. If future changes are behavioural, re-run pytest at /app/backend/tests/backend_test.py.",
+  "rca of the issue": "N/A — regression pass, no issues found."
+}

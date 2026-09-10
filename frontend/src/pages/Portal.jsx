@@ -182,8 +182,8 @@ export default function Portal() {
                 { i: Crosshair, l: "Medley Wins", v: s?.medley_wins ?? 0 },
                 { i: TrendingUp, l: "Count Up Wins", v: s?.countup_wins ?? 0 },
                 { i: Scissors, l: "Half It Wins", v: s?.halfit_wins ?? 0 },
-              ].map((x, i) => (
-                <div key={i} className="bg-ink-800 border border-white/10 rounded-xl p-5">
+              ].map((x) => (
+                <div key={x.l} className="bg-ink-800 border border-white/10 rounded-xl p-5">
                   <x.i className="text-amber-500 mb-2" size={20} />
                   <div className="font-head font-black text-3xl text-white">{x.v}</div>
                   <div className="font-mono text-[10px] uppercase tracking-widest text-gray-400 mt-1">{x.l}</div>

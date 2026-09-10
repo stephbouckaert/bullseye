@@ -80,8 +80,8 @@ export default function Home() {
                 { icon: Target, t: "Season Kick-off", d: "September 20 — first darts fly", c: "text-amber-500" },
                 { icon: Clock, t: "Every Sunday", d: "3:00 PM – 6:00 PM match window", c: "text-amber-500" },
                 { icon: Trophy, t: "Finals & Party", d: "December 27 — champions crowned", c: "text-crimson" },
-              ].map((x, i) => (
-                <div key={i} className="flex items-start gap-4">
+              ].map((x) => (
+                <div key={x.t} className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
                     <x.icon className={x.c} size={20} />
                   </div>
@@ -118,8 +118,8 @@ export default function Home() {
             { t: "Medley", d: "Game 1: 701 (Master Out) · Game 2: Standard Cricket (20–15 + Bull) · Game 3: choice of the two. Win 2-0 for 3 pts, 2-1 for 2 pts.", pts: "3 pts", img: GAME_IMAGES.medley701 },
             { t: "Count Up", d: "Add up your 3-dart scores over 8 rounds — highest total wins. Winner takes +1 point.", pts: "+1 pt", img: GAME_IMAGES.countup },
             { t: "Half It", d: "Hit each called target (15, 16, DBL, 17…). Miss and your score is halved. Winner takes +1 point.", pts: "+1 pt", img: GAME_IMAGES.halfit },
-          ].map((g, i) => (
-            <div key={i} className="group relative overflow-hidden bg-ink-800 border border-white/10 rounded-2xl hover:border-amber-500/40 transition-all">
+          ].map((g) => (
+            <div key={g.t} className="group relative overflow-hidden bg-ink-800 border border-white/10 rounded-2xl hover:border-amber-500/40 transition-all">
               <div className="h-40 overflow-hidden">
                 <img src={g.img} alt={g.t} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500" />
               </div>
