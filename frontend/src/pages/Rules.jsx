@@ -3,6 +3,10 @@ import { GAME_IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
+const MEDLEY_IMAGES = [GAME_IMAGES.medley701, GAME_IMAGES.cricket];
+const COUNTUP_IMAGES = [GAME_IMAGES.countup];
+const HALFIT_IMAGES = [GAME_IMAGES.halfit];
+
 const Rule = ({ icon: Icon, title, children, accent = "text-amber-500", images }) => (
   <div className="bg-ink-800 border border-white/10 rounded-2xl p-6 hover:border-amber-500/40 transition-all">
     {images && (
@@ -62,16 +66,16 @@ export default function Rules() {
           <Rule icon={HandMetal} title="Who Throws First">
             <p>Throw a dart at the bullseye. <strong className="text-white">Closest to the center</strong> throws first.</p>
           </Rule>
-          <Rule icon={Crosshair} title="Medley Game" images={[GAME_IMAGES.medley701, GAME_IMAGES.cricket]}>
+          <Rule icon={Crosshair} title="Medley Game" images={MEDLEY_IMAGES}>
             <p><strong className="text-white">Game 1:</strong> 701 — straight start, <span className="text-amber-500/90">Master Out</span> finish (double or bull to close).</p>
             <p><strong className="text-white">Game 2:</strong> Standard Cricket — 20, 19, 18, 17, 16, 15 &amp; Bull.</p>
             <p><strong className="text-white">Game 3:</strong> Player's choice of 701 or Cricket — the decider.</p>
           </Rule>
-          <Rule icon={TrendingUp} title="Count Up Game" images={[GAME_IMAGES.countup]}>
+          <Rule icon={TrendingUp} title="Count Up Game" images={COUNTUP_IMAGES}>
             <p>Throw 3 darts a round over 8 rounds and stack the highest total — every hit counts, bulls and trebles included.</p>
             <p className="text-amber-500/90">Highest total wins the game (+1 league point).</p>
           </Rule>
-          <Rule icon={Scissors} title="Half It Game" images={[GAME_IMAGES.halfit]}>
+          <Rule icon={Scissors} title="Half It Game" images={HALFIT_IMAGES}>
             <p>Hit the called target each round — 15, 16, Double, 17, 18, 20, Bull. Land it and you score; <strong className="text-crimson">miss it and your score is HALVED.</strong></p>
             <p className="text-amber-500/90">Highest score after all rounds wins (+1 league point).</p>
           </Rule>

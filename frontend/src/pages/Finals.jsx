@@ -6,6 +6,9 @@ import { IMAGES } from "@/lib/assets";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
+const CONFETTI_INITIAL = { y: -40, opacity: 1, rotate: 0 };
+const CONFETTI_ANIMATE = { y: "110vh", rotate: 720, opacity: [1, 1, 0.8, 0] };
+
 const Slot = ({ seed, player, highlight }) => (
   <div data-testid={`bracket-slot-${seed ?? "tbd"}`}
     className={`flex items-center gap-3 rounded-lg px-3 py-2.5 border transition-all ${highlight ? "bg-amber-500/15 border-amber-500/50" : "bg-ink-900 border-white/10"}`}>
@@ -38,8 +41,8 @@ const Confetti = () => {
         const size = 6 + Math.random() * 8;
         return (
           <motion.div key={`confetti-${i}`}
-            initial={{ y: -40, opacity: 1, rotate: 0 }}
-            animate={{ y: "110vh", rotate: 720, opacity: [1, 1, 0.8, 0] }}
+            initial={CONFETTI_INITIAL}
+            animate={CONFETTI_ANIMATE}
             transition={{ duration: dur, delay, ease: "easeIn", repeat: Infinity }}
             style={{ position: "absolute", left: `${left}%`, width: size, height: size * 1.4, background: colors[i % colors.length], borderRadius: 2 }} />
         );
